@@ -762,10 +762,9 @@ int main()
 	return 0;
 }
 
-bool isRHS = true;
 
 void expression_eval(node *root){
-	isRHS = true;
+
 	for(int i=0; i<root->size; ++i){
 		expression_eval(root->child[i]);
 	}
@@ -818,9 +817,17 @@ void expression_eval(node *root){
 			cout<<"\tpushq\t%rax\n";
 		}
 		if(strcmp(root->child[0]->name , "OR")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\torl\t%ebx, %eax\n";
+			cout<<"\tpushq\t%rax\n";		
 
 		}
 		if(strcmp(root->child[0]->name , "AND")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tandl\t%ebx, %eax\n";
+			cout<<"\tpushq\t%rax\n";		
 
 		}
 		if(strcmp(root->child[0]->name , "NEQ")== 0){
@@ -828,36 +835,42 @@ void expression_eval(node *root){
 			cout<<"\tpop\t%rax\n";
 				cout<<"\tcmpl\t%ebx, %eax\n";
 			cout<<"\tsetne\t%al\n";
+			cout<<"\tpushq\t%rax\n";	
 		}
 		if(strcmp(root->child[0]->name , "EQ")== 0){
 			cout<<"\tpop\t%rbx\n";
 			cout<<"\tpop\t%rax\n";
 				cout<<"\tcmpl\t%ebx, %eax\n";
 			cout<<"\tsete\t%al\n";
+			cout<<"\tpushq\t%rax\n";	
 		}
 		if(strcmp(root->child[0]->name , "LEQ")== 0){
 			cout<<"\tpop\t%rbx\n";
 			cout<<"\tpop\t%rax\n";
 				cout<<"\tcmpl\t%ebx, %eax\n";
 			cout<<"\tsetle\t%al\n";
+			cout<<"\tpushq\t%rax\n";	
 		}
 		if(strcmp(root->child[0]->name , "GEQ")== 0){
 			cout<<"\tpop\t%rbx\n";
 			cout<<"\tpop\t%rax\n";
 				cout<<"\tcmpl\t%ebx, %eax\n";
 			cout<<"\tsetge\t%al\n";
+			cout<<"\tpushq\t%rax\n";
 		}
 		if(strcmp(root->child[0]->name , "<")== 0){
 			cout<<"\tpop\t%rbx\n";
 			cout<<"\tpop\t%rax\n";
 				cout<<"\tcmpl\t%ebx, %eax\n";
 			cout<<"\tsetl\t%al\n";
+			cout<<"\tpushq\t%rax\n";	
 		}
 		if(strcmp(root->child[0]->name , ">") == 0){
 			cout<<"\tpop\t%rbx\n";
 			cout<<"\tpop\t%rax\n";
 				cout<<"\tcmpl\t%ebx, %eax\n";
 			cout<<"\tsetg\t%al\n";
+			cout<<"\tpushq\t%rax\n";	
 		}
 
 		//if epxr -> Pexpr 
@@ -865,7 +878,8 @@ void expression_eval(node *root){
 
 	if( (strcmp(root->name,"expr") == 0) && root->size == 2  ){
 		//!P -P +P *P &P
-		if(strcmp(root->child[0]->name, ">")  == 0){}
+		if(strcmp(root->child[0]->name, "!")  == 0){}
+		if(strcmp(root->child[0]->name, "-")  == 0){}
 	}
 
 }
