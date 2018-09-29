@@ -9,15 +9,143 @@ main:
 	pushq	%rbp
 	movq	%rsp, %rbp
  subq $4000, %rsp
-	movl	$30, -4(%rbp)
-	movl	$40, -8(%rbp)
-	movl	$0, -12(%rbp)
-	movl	-4(%rbp), %eax
+	pushq	$120
+	pop	%rbx
+	movl	 %ebx, -4(%rbp)
+	pushq	$40
+	pop	%rbx
+	movl	 %ebx, -8(%rbp)
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
 	movl	%eax, %esi
 	movl	$.LC0, %edi
 	movl	$0, 	%eax
 	call	printf
-	movl	-8(%rbp), %eax
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	pop	%rax
+	cmpl	%ebx, %eax
+	sete	%al
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	pop	%rax
+	cmpl	%ebx, %eax
+	setne	%al
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	pop	%rax
+	cmpl	%ebx, %eax
+	setle	%al
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	pop	%rax
+	cmpl	%ebx, %eax
+	setl	%al
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	pop	%rax
+	cmpl	%ebx, %eax
+	setge	%al
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	pop	%rax
+	cmpl	%ebx, %eax
+	setg	%al
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	pop	%rax
+	addl	%ebx, %eax
+	pushq	%rax
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	pop	%rax
+	subl	%ebx, %eax
+	pushq	%rax
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	-4(%rbp)
+	pushq	-8(%rbp)
+	pop	%rbx
+	pop	%rax
+	imull	%ebx, %eax
+	pushq	%rax
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
 	movl	%eax, %esi
 	movl	$.LC0, %edi
 	movl	$0, 	%eax

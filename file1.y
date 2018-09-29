@@ -666,7 +666,7 @@ identifier:
 		$1 = mknode0(0);
 		strcpy($1->name,yytext);
 		$$ = mknode1(1,$1);
-		//changed "identifier" to $1->name
+
 		strcpy($$->name,"identifier");
 	};
 string:
@@ -762,6 +762,114 @@ int main()
 	return 0;
 }
 
+bool isRHS = true;
+
+void expression_eval(node *root){
+	isRHS = true;
+	for(int i=0; i<root->size; ++i){
+		expression_eval(root->child[i]);
+	}
+
+	if(strcmp(root->name, "integerLit") == 0 ){
+
+		cout<<"\tpushq\t$"<<atoi((root->child[0])->name)<<"\n";  
+	}
+	if(strcmp(root->name,"identifier") == 0  ){
+
+		cout<<"\tpushq\t"<<-4*var_offset[(root->child[0])->name]<<"(%rbp)\n"; 
+
+	}
+	if( (strcmp(root->name,"expr") == 0) && root->size == 1  ){
+	
+		if(strcmp (root->child[0]->name, "+") == 0 ){
+			//addition
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";	
+				cout<<"\taddl\t%ebx, %eax\n";
+			cout<<"\tpushq\t%rax\n";
+
+		}
+
+		if(strcmp(root->child[0]->name, "-") == 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tsubl\t%ebx, %eax\n";
+			cout<<"\tpushq\t%rax\n";
+		}
+		if(strcmp(root->child[0]->name, "*")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\timull\t%ebx, %eax\n";
+			cout<<"\tpushq\t%rax\n";
+		}
+		if(strcmp(root->child[0]->name, "/")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tcltd\n";
+				cout<<"\tidivl\t%ebx\n";
+			cout<<"\tpushq\t%rax\n";
+		}
+		if(strcmp(root->child[0]->name , "%")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tcltd\n";
+				cout<<"\tidivl\t%ebx\n";
+				cout<<"\tmovl\t%ebx, %eax\n";
+			cout<<"\tpushq\t%rax\n";
+		}
+		if(strcmp(root->child[0]->name , "OR")== 0){
+
+		}
+		if(strcmp(root->child[0]->name , "AND")== 0){
+
+		}
+		if(strcmp(root->child[0]->name , "NEQ")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tcmpl\t%ebx, %eax\n";
+			cout<<"\tsetne\t%al\n";
+		}
+		if(strcmp(root->child[0]->name , "EQ")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tcmpl\t%ebx, %eax\n";
+			cout<<"\tsete\t%al\n";
+		}
+		if(strcmp(root->child[0]->name , "LEQ")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tcmpl\t%ebx, %eax\n";
+			cout<<"\tsetle\t%al\n";
+		}
+		if(strcmp(root->child[0]->name , "GEQ")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tcmpl\t%ebx, %eax\n";
+			cout<<"\tsetge\t%al\n";
+		}
+		if(strcmp(root->child[0]->name , "<")== 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tcmpl\t%ebx, %eax\n";
+			cout<<"\tsetl\t%al\n";
+		}
+		if(strcmp(root->child[0]->name , ">") == 0){
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tpop\t%rax\n";
+				cout<<"\tcmpl\t%ebx, %eax\n";
+			cout<<"\tsetg\t%al\n";
+		}
+
+		//if epxr -> Pexpr 
+	}
+
+	if( (strcmp(root->name,"expr") == 0) && root->size == 2  ){
+		//!P -P +P *P &P
+		if(strcmp(root->child[0]->name, ">")  == 0){}
+	}
+
+}
+
 void DFS(node *root)
 {
 
@@ -769,18 +877,20 @@ void DFS(node *root)
 	int i;
 	for(i=0;i<num;i++)
 	{
+//		if(strcmp(root->name,"assign_stmt") == 0 && i==0 ){ continue; }
+
 		DFS(root->child[i]);
 	}
 
 
 	if(strcmp(root->name,"print_stmt") == 0)
 	{
-/*
-	movl	-4(%rbp), %eax
-	movl	%eax, %esi
-	movl	$.LC0, %edi
-	movl	$0, %eax
-*/
+	/*
+		movl	-4(%rbp), %eax
+		movl	%eax, %esi
+		movl	$.LC0, %edi
+		movl	$0, %eax
+	*/
 
 		cout<<"\tmovl\t"<<var_offset[(root->child[4])->child[0]->name]*(-4)<<"(%rbp), %eax\n";
 		cout<<"\tmovl\t%eax, %esi\n";
@@ -793,25 +903,18 @@ void DFS(node *root)
 	{
 		var_offset[root->child[1]->child[0]->name] = (++var_count);
 	}
-	/*movl	$30, -4(%rbp) */
+
 	if(strcmp(root->name,"assign_stmt") == 0)
 	{
+		expression_eval(root->child[0]->child[1]);
+		//rbx == rax
+		cout<<"\tpop\t%rbx\n";	
+		cout<<"\tmovl\t %ebx, ";
 
-		cout<<"\tmovl\t$"<<root->child[0]->child[1]->value<<", ";
 		cout<<var_offset[root->child[0]->child[0]->child[0]->name]*-4<<"(%rbp)"<<endl;
 
 	}
-/*
-	movl	-4(%rbp), %edx
-	movl	-8(%rbp), %eax
-	addl	%edx, %eax
-	movl	%eax, -12(%rbp)
 
-*/
-	if(strcmp(root->name,"exp") == 0)
-	{
-
-	}
 
 
 	return;
