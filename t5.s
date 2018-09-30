@@ -9,9 +9,27 @@ main:
 	pushq	%rbp
 	movq	%rsp, %rbp
  subq $4000, %rsp
-	movl	$70, -4(%rbp)
-	movl	$40, -8(%rbp)
+	pushq	$42
+	pop	%rbx
+	movl	 %ebx, -4(%rbp)
+	pushq	$51
+	pop	%rbx
+	movl	 %ebx, -8(%rbp)
+	pushq	$99
+	pop	%rax
+	negl %eax
+	pushq	%rax
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
 	movl	-4(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+	pushq	$1
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	movl	-8(%rbp), %eax
 	movl	%eax, %esi
 	movl	$.LC0, %edi
 	movl	$0, 	%eax

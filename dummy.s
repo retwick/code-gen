@@ -9,13 +9,16 @@ main:
 	pushq	%rbp
 	movq	%rsp, %rbp
  subq $4000, %rsp
-	pushq	$72
+	pushq	$42
 	pop	%rbx
 	movl	 %ebx, -4(%rbp)
-	pushq	$18
+	pushq	$51
 	pop	%rbx
 	movl	 %ebx, -8(%rbp)
-	pushq	$1
+	pushq	$99
+	pop	%rax
+	negl %eax
+	pushq	%rax
 	pop	%rbx
 	movl	 %ebx, -12(%rbp)
 	pushq	-4(%rbp)
@@ -23,29 +26,36 @@ main:
 	pop	%rbx
 	pop	%rax
 	cmpl	%ebx, %eax
-	setne	%al
+	setle	%al
 	pushq	%rax
 	pop	%rbx
-	movl	 %ebx, -16(%rbp)
-	pushq	-12(%rbp)
-	pushq	-16(%rbp)
-	pop	%rbx
-	pop	%rax
-	andl	%ebx, %eax
-	pushq	%rax
-	pop	%rbx
-	movl	 %ebx, -20(%rbp)
-	pushq	-20(%rbp)
-	pop	%rbx
-	movl	 %ebx, -24(%rbp)
-	pushq	-24(%rbp)
-	pop	%rbx
-	movl	 %ebx, -4(%rbp)
+	je .L0
 	movl	-4(%rbp), %eax
 	movl	%eax, %esi
 	movl	$.LC0, %edi
 	movl	$0, 	%eax
 	call	printf
+	pushq	$1
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
+	 jmp .L1
+.L0:
+	movl	-8(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+.L1:
+	pushq	-12(%rbp)
+	pop	%rbx
+	cmpl	$0, %ebx
+	je .L2
+	movl	-8(%rbp), %eax
+	movl	%eax, %esi
+	movl	$.LC0, %edi
+	movl	$0, 	%eax
+	call	printf
+.L2:
 	leave
 	ret
 	.size	main, .-main

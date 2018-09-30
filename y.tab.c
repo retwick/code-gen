@@ -2451,8 +2451,8 @@ void DFS(node *root)
 	for(i=0;i<num;i++)
 	{
 //		if(strcmp(root->name,"assign_stmt") == 0 && i==0 ){ continue; }
+		if(!(strcmp(root->name,"if_stmt") == 0)) DFS(root->child[i]);
 
-		DFS(root->child[i]);
 	}
 
 
@@ -2487,8 +2487,41 @@ void DFS(node *root)
 		cout<<var_offset[root->child[0]->child[0]->child[0]->name]*-4<<"(%rbp)"<<endl;
 
 	}
+	if(strcmp(root->name,"if_stmt") == 0 && root->size == 5){
+		//if then
 
+		expression_eval(root->child[2]);
 
+		cout<<"\tpop\t%rbx\n";			
+		cout<<"\tcmpl\t$0, %ebx\n";
+		cout<<"\tje .L"<<label_start<<"\n";
+
+		DFS(root->child[4]);
+		
+
+	cout<<".L"<<label_start<<":\n";
+		label_start+=1;
+	}
+	if(strcmp(root->name,"if_stmt") == 0 && root->size == 7){
+		//if then else
+		expression_eval(root->child[2]);
+		
+
+		cout<<"\tpop\t%rbx\n";			
+		cout<<"\tje .L"<<label_start<<"\n";
+
+		DFS(root->child[4]);
+
+		cout<<"\t jmp .L"<<label_start+1<<"\n";
+
+		cout<<".L"<<label_start<<":\n";
+		DFS(root->child[6]);
+
+		cout<<".L"<<label_start+1<<":\n";
+
+		label_start+=2;
+
+	}
 
 	return;
 }
