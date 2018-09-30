@@ -2324,8 +2324,8 @@ void expression_eval(node *root){
 			cout<<"\tpop\t%rax\n";
 				cout<<"\tcltd\n";
 				cout<<"\tidivl\t%ebx\n";
-				cout<<"\tmovl\t%ebx, %eax\n";
-			cout<<"\tpushq\t%rax\n";
+				//cout<<"\tmovl\t%edx, %eax\n";
+			cout<<"\tpushq\t%rdx\n";
 		}
 		if(strcmp(root->child[0]->name , "OR")== 0){
 
@@ -2519,18 +2519,21 @@ void DFS(node *root)
 
 	}
 	if(strcmp(root->name,"while_stmt") == 0){
-		//cout<<".enter_while\n";
-		cout<<"jmp .L"<<label_start<<"\n";
+
+		cout<<"\tjmp .L"<<label_start<<"\n";
+
 	cout<<".L"<<label_start+1<<":\n";
 		DFS(root->child[4]);
 		
 	cout<<".L"<<label_start<<":\n";
 		expression_eval(root->child[2]);
-		
-		cout<<"\tpop\t%rax\n";			
-		cout<<"\tcmpl\t$0, %eax\n";
+		cout<<"\tpop\t%rbx\n";			
+		cout<<"\tcmpl\t$0, %ebx\n";
 		cout<<"\tjne .L"<<label_start+1<<"\n";
 
+
+		
+		
 		label_start += 2;
 	}
 	return;
