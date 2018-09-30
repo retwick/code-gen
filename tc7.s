@@ -9,30 +9,39 @@ main:
 	pushq	%rbp
 	movq	%rsp, %rbp
  subq $4000, %rsp
-	pushq	$0
+	pushq	$72
 	pop	%rbx
 	movl	 %ebx, -4(%rbp)
-	pushq	$2
+	pushq	$18
 	pop	%rbx
 	movl	 %ebx, -8(%rbp)
+	pushq	$1
+	pop	%rbx
+	movl	 %ebx, -12(%rbp)
 	pushq	-4(%rbp)
 	pushq	-8(%rbp)
 	pop	%rbx
 	pop	%rax
-	cmpl $0, %eax
-jne	.L0
-	cmpl $0, %ebx
-je	.L1
-.L0:
-	movl	$1, %eax
-	jmp	.L2
-.L1:
-	movl $0, %eax
-.L2:
+	cmpl	%ebx, %eax
+	setne	%al
 	pushq	%rax
 	pop	%rbx
-	movl	 %ebx, -12(%rbp)
-	movl	-12(%rbp), %eax
+	movl	 %ebx, -16(%rbp)
+	pushq	-12(%rbp)
+	pushq	-16(%rbp)
+	pop	%rbx
+	pop	%rax
+	andl	%ebx, %eax
+	pushq	%rax
+	pop	%rbx
+	movl	 %ebx, -20(%rbp)
+	pushq	-20(%rbp)
+	pop	%rbx
+	movl	 %ebx, -24(%rbp)
+	pushq	-24(%rbp)
+	pop	%rbx
+	movl	 %ebx, -4(%rbp)
+	movl	-4(%rbp), %eax
 	movl	%eax, %esi
 	movl	$.LC0, %edi
 	movl	$0, 	%eax

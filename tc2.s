@@ -11,28 +11,16 @@ main:
  subq $4000, %rsp
 	pushq	$0
 	pop	%rbx
-	movl	 %ebx, -4(%rbp)
-	pushq	$2
-	pop	%rbx
 	movl	 %ebx, -8(%rbp)
-	pushq	-4(%rbp)
 	pushq	-8(%rbp)
+	pushq	$6
 	pop	%rbx
 	pop	%rax
-	cmpl $0, %eax
-jne	.L0
-	cmpl $0, %ebx
-je	.L1
-.L0:
-	movl	$1, %eax
-	jmp	.L2
-.L1:
-	movl $0, %eax
-.L2:
+	subl	%ebx, %eax
 	pushq	%rax
 	pop	%rbx
-	movl	 %ebx, -12(%rbp)
-	movl	-12(%rbp), %eax
+	movl	 %ebx, -4(%rbp)
+	movl	-4(%rbp), %eax
 	movl	%eax, %esi
 	movl	$.LC0, %edi
 	movl	$0, 	%eax

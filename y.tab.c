@@ -2278,10 +2278,9 @@ int main()
 	return 0;
 }
 
-bool isRHS = true;
 
 void expression_eval(node *root){
-	isRHS = true;
+
 	for(int i=0; i<root->size; ++i){
 		expression_eval(root->child[i]);
 	}
@@ -2334,18 +2333,40 @@ void expression_eval(node *root){
 			cout<<"\tpushq\t%rax\n";
 		}
 		if(strcmp(root->child[0]->name , "OR")== 0){
+
 			cout<<"\tpop\t%rbx\n";
 			cout<<"\tpop\t%rax\n";
-				cout<<"\torl\t%ebx, %eax\n";
-			cout<<"\tpushq\t%rax\n";		
-
+			
+			cout<<"\tcmpl $0, %eax\n";
+			cout<<"jne\t.L"<<label_start<<"\n";
+			cout<<"\tcmpl $0, %ebx\n";
+			cout<<"je\t.L"<<label_start+1<<"\n";
+		cout<<".L"<<label_start<<":\n";
+			cout<<"\tmovl\t$1, %eax\n";
+			cout<<"\tjmp\t.L"<<label_start+2<<"\n";
+		cout<<".L"<<label_start+1<<":\n";
+			cout<<"\tmovl $0, %eax\n";
+		cout<<".L"<<label_start+2<<":\n";			
+			cout<<"\tpushq\t%rax\n";	
+			label_start += 3;
+			
 		}
 		if(strcmp(root->child[0]->name , "AND")== 0){
+			
 			cout<<"\tpop\t%rbx\n";
 			cout<<"\tpop\t%rax\n";
-				cout<<"\tandl\t%ebx, %eax\n";
-			cout<<"\tpushq\t%rax\n";		
-
+			
+			cout<<"\tcmp $0, %eax\n";
+			cout<<"je\t.L"<<label_start<<"\n";
+			cout<<"\tcmp $0, %ebx\n";
+			cout<<"je\t.L"<<label_start<<"\n";
+			cout<<"\tmovl\t$1, %eax\n";
+			cout<<"\tjmp\t.L"<<label_start+1<<"\n";
+		cout<<".L"<<label_start<<":\n";
+			cout<<"\tmovl $0, %eax\n";
+		cout<<".L"<<label_start+1<<":\n";			
+			cout<<"\tpushq\t%rax\n";	
+			label_start += 2;
 		}
 		if(strcmp(root->child[0]->name , "NEQ")== 0){
 			cout<<"\tpop\t%rbx\n";
@@ -2395,7 +2416,29 @@ void expression_eval(node *root){
 
 	if( (strcmp(root->name,"expr") == 0) && root->size == 2  ){
 		//!P -P +P *P &P
-		if(strcmp(root->child[0]->name, ">")  == 0){}
+		if(strcmp(root->child[0]->name, "!")  == 0){
+			/*
+			cmpl	$0, -4(%rbp)
+			sete	%al
+			movzbl	%al, %eax
+			movl	%eax, -12(%rbp)
+			*/
+			cout<<"\tpop\t%rbx\n";
+			cout<<"\tcmpl\t$0, %ebx\n";
+			cout<<"\tsete %al\n";
+			cout<<"\tmovzbl\t%al, %eax\n";
+			cout<<"\tpushq\t%rax\n";
+		}
+		if(strcmp(root->child[0]->name, "-")  == 0){
+			/*
+	movl	-4(%rbp), %eax
+	negl	%eax
+	movl	%eax, -12(%rbp)
+			*/
+			cout<<"\tpop\t%rax\n";
+			cout<<"\tnegl %eax\n";
+			cout<<"\tpushq\t%rax\n";	
+		}
 	}
 
 }

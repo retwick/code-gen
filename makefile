@@ -11,3 +11,7 @@ lex.yy.c: file1.l y.tab.h
 clean:
 	@rm lex.yy.c y.tab.h y.tab.c prog
 
+archive: clean
+	rm -r .git
+	tar -zcvf ../CS16B024.tar.gz -C .. `basename ${PWD}` ; \
+	echo "Created the archive file ../CS16B024.tar.gz."
