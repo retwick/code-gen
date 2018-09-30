@@ -613,8 +613,8 @@ static const short yyrline[] = { 0,
    271,   276,   282,   297,   310,   321,   327,   332,   342,   356,
    368,   382,   392,   402,   413,   424,   435,   449,   458,   466,
    474,   482,   490,   498,   506,   514,   522,   530,   538,   546,
-   554,   561,   568,   575,   582,   589,   595,   604,   614,   621,
-   627,   633,   644,   654,   663,   672,   681,   689,   695,   701
+   554,   561,   568,   575,   582,   589,   595,   604,   614,   620,
+   625,   630,   640,   649,   658,   667,   676,   684,   690,   696
 };
 
 static const char * const yytname[] = {   "$","error","$illegal.","FLOAT_LITERAL",
@@ -1794,7 +1794,7 @@ case 56:
 		strcpy(yyvsp[-1]->name,"+");
 		yyval = mknode1(1,yyvsp[-1]);
 		strcpy(yyval->name,"expr");
-		yyval->value = yyvsp[-2]->value + yyvsp[0]->value;
+		
 	;
     break;}
 case 57:
@@ -1804,7 +1804,7 @@ case 57:
 		strcpy(yyvsp[-1]->name,"-");
 		yyval = mknode1(1,yyvsp[-1]);
 		strcpy(yyval->name,"expr");
-		yyval->value = yyvsp[-2]->value - yyvsp[0]->value;
+		
 	;
     break;}
 case 58:
@@ -1814,7 +1814,7 @@ case 58:
 		strcpy(yyvsp[-1]->name,"*");
 		yyval = mknode1(1,yyvsp[-1]);
 		strcpy(yyval->name,"expr");
-		yyval->value = yyvsp[-2]->value + yyvsp[0]->value;
+		
 	;
     break;}
 case 59:
@@ -1824,7 +1824,7 @@ case 59:
 		strcpy(yyvsp[-1]->name,"/");
 		yyval = mknode1(1,yyvsp[-1]);
 		strcpy(yyval->name,"expr");
-		yyval->value = yyvsp[-2]->value / yyvsp[0]->value;
+		
 	;
     break;}
 case 60:
@@ -1834,7 +1834,7 @@ case 60:
 		strcpy(yyvsp[-1]->name,"%");
 		yyval = mknode1(1,yyvsp[-1]);
 		strcpy(yyval->name,"expr");
-		yyval->value = yyvsp[-2]->value % yyvsp[0]->value;
+		
 	;
     break;}
 case 61:
@@ -1887,7 +1887,7 @@ case 66:
 {
 		yyval = mknode1(1,yyvsp[0]);
 		strcpy(yyval->name,"expr");
-		yyval->value = yyvsp[0]->value;
+		
 	;
     break;}
 case 67:
@@ -1917,27 +1917,24 @@ case 69:
 {
 		yyval = mknode1(1,yyvsp[0]);
 		strcpy(yyval->name,"Pexpr");
-		yyval->value = yyvsp[0]->value;
 	;
     break;}
 case 70:
-#line 622 "file1.y"
+#line 621 "file1.y"
 {
 		yyval = mknode1(1,yyvsp[0]);
 		strcpy(yyval->name,"Pexpr");
-		yyval->value = yyvsp[0]->value;
 	;
     break;}
 case 71:
-#line 628 "file1.y"
+#line 626 "file1.y"
 {
 		yyval = mknode1(1,yyvsp[0]);
 		strcpy(yyval->name,"Pexpr");
-		yyval->value = yyvsp[0]->value;
 	;
     break;}
 case 72:
-#line 634 "file1.y"
+#line 631 "file1.y"
 {
 		yyvsp[-2] = mknode0(0);
 		yyvsp[0] = mknode0(0);
@@ -1945,21 +1942,19 @@ case 72:
 		strcpy(yyvsp[0]->name,")");
 		yyval = mknode3(3,yyvsp[-2],yyvsp[-1],yyvsp[0]);
 		strcpy(yyval->name,"Pexpr");
-		yyval->value = yyvsp[-1]->value;
 	;
     break;}
 case 73:
-#line 646 "file1.y"
+#line 642 "file1.y"
 {
 		yyvsp[0] = mknode0(0);
 		strcpy(yyvsp[0]->name,yytext);
 		yyval = mknode1(1,yyvsp[0]);
-		yyval->value = atoi(yytext);
 		strcpy(yyval->name,"integerLit");	
 	;
     break;}
 case 74:
-#line 656 "file1.y"
+#line 651 "file1.y"
 {
 		yyvsp[0] = mknode0(0);
 		strcpy(yyvsp[0]->name,yytext);
@@ -1968,7 +1963,7 @@ case 74:
 	;
     break;}
 case 75:
-#line 665 "file1.y"
+#line 660 "file1.y"
 {
 		yyvsp[0] = mknode0(0);
 		strcpy(yyvsp[0]->name,yytext);
@@ -1978,7 +1973,7 @@ case 75:
 	;
     break;}
 case 76:
-#line 674 "file1.y"
+#line 669 "file1.y"
 {
 		yyvsp[0] = mknode0(0);
 		strcpy(yyvsp[0]->name,yytext);
@@ -1987,7 +1982,7 @@ case 76:
 	;
     break;}
 case 77:
-#line 683 "file1.y"
+#line 678 "file1.y"
 {
 		yyvsp[-1] = mknode0(0);
 		strcpy(yyvsp[-1]->name,",");
@@ -1996,21 +1991,21 @@ case 77:
 	;
     break;}
 case 78:
-#line 690 "file1.y"
+#line 685 "file1.y"
 {
 		yyval = mknode1(1,yyvsp[0]);
 		strcpy(yyval->name,"arg_list");
 	;
     break;}
 case 79:
-#line 697 "file1.y"
+#line 692 "file1.y"
 {
 		yyval = mknode1(1,yyvsp[0]);
 		strcpy(yyval->name,"args");
 	;
     break;}
 case 80:
-#line 701 "file1.y"
+#line 696 "file1.y"
 {
 		yyval = mknode0(1);
 		strcpy(yyval->name,"args");
@@ -2220,7 +2215,7 @@ YYLABEL(yyerrhandle)
 /* END */
 
  #line 1038 "/usr/share/bison++/bison.cc"
-#line 708 "file1.y"
+#line 703 "file1.y"
 
 
 void yyerror(string s) {

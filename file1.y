@@ -517,7 +517,7 @@ expr:
 		strcpy($2->name,"+");
 		$$ = mknode1(1,$2);
 		strcpy($$->name,"expr");
-		$$->value = $1->value + $3->value;
+		
 	}
 |	Pexpr '-' Pexpr
 	{
@@ -525,7 +525,7 @@ expr:
 		strcpy($2->name,"-");
 		$$ = mknode1(1,$2);
 		strcpy($$->name,"expr");
-		$$->value = $1->value - $3->value;
+		
 	}
 |	Pexpr '*' Pexpr
 	{
@@ -533,7 +533,7 @@ expr:
 		strcpy($2->name,"*");
 		$$ = mknode1(1,$2);
 		strcpy($$->name,"expr");
-		$$->value = $1->value + $3->value;
+		
 	}
 |	Pexpr '/' Pexpr
 	{
@@ -541,7 +541,7 @@ expr:
 		strcpy($2->name,"/");
 		$$ = mknode1(1,$2);
 		strcpy($$->name,"expr");
-		$$->value = $1->value / $3->value;
+		
 	}
 |	Pexpr '%' Pexpr
 	{
@@ -549,7 +549,7 @@ expr:
 		strcpy($2->name,"%");
 		$$ = mknode1(1,$2);
 		strcpy($$->name,"expr");
-		$$->value = $1->value % $3->value;
+		
 	}
 |	'!' Pexpr
 	{
@@ -590,7 +590,7 @@ expr:
 	{
 		$$ = mknode1(1,$1);
 		strcpy($$->name,"expr");
-		$$->value = $1->value;
+		
 	}
 |	identifier '(' args ')'
 	{
@@ -616,19 +616,16 @@ Pexpr:
 	{
 		$$ = mknode1(1,$1);
 		strcpy($$->name,"Pexpr");
-		$$->value = $1->value;
 	}
 |	floatLit
 	{
 		$$ = mknode1(1,$1);
 		strcpy($$->name,"Pexpr");
-		$$->value = $1->value;
 	}
 |	identifier
 	{
 		$$ = mknode1(1,$1);
 		strcpy($$->name,"Pexpr");
-		$$->value = $1->value;
 	}
 |	'(' expr ')'
 	{
@@ -638,7 +635,6 @@ Pexpr:
 		strcpy($3->name,")");
 		$$ = mknode3(3,$1,$2,$3);
 		strcpy($$->name,"Pexpr");
-		$$->value = $2->value;
 	};
 
 integerLit:
@@ -647,7 +643,6 @@ integerLit:
 		$1 = mknode0(0);
 		strcpy($1->name,yytext);
 		$$ = mknode1(1,$1);
-		$$->value = atoi(yytext);
 		strcpy($$->name,"integerLit");	
 	};
 
