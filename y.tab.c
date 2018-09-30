@@ -2451,7 +2451,7 @@ void DFS(node *root)
 	for(i=0;i<num;i++)
 	{
 //		if(strcmp(root->name,"assign_stmt") == 0 && i==0 ){ continue; }
-		if(!(strcmp(root->name,"if_stmt") == 0)) DFS(root->child[i]);
+		if(!(strcmp(root->name,"if_stmt") == 0 || strcmp(root->name,"while_stmt") == 0 )) DFS(root->child[i]);
 
 	}
 
@@ -2507,7 +2507,8 @@ void DFS(node *root)
 		expression_eval(root->child[2]);
 		
 
-		cout<<"\tpop\t%rbx\n";			
+		cout<<"\tpop\t%rbx\n";		
+		cout<<"\tcmpl\t$0, %ebx\n";	
 		cout<<"\tje .L"<<label_start<<"\n";
 
 		DFS(root->child[4]);
@@ -2522,7 +2523,21 @@ void DFS(node *root)
 		label_start+=2;
 
 	}
+	if(strcmp(root->name,"while_stmt") == 0){
+		//cout<<".enter_while\n";
+		cout<<"jmp .L"<<label_start<<"\n";
+	cout<<".L"<<label_start+1<<":\n";
+		DFS(root->child[4]);
+		
+	cout<<".L"<<label_start<<":\n";
+		expression_eval(root->child[2]);
+		
+		cout<<"\tpop\t%rax\n";			
+		cout<<"\tcmpl\t$0, %eax\n";
+		cout<<"\tjne .L"<<label_start+1<<"\n";
 
+		label_start += 2;
+	}
 	return;
 }
 

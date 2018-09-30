@@ -9,53 +9,38 @@ main:
 	pushq	%rbp
 	movq	%rsp, %rbp
  subq $4000, %rsp
-	pushq	$42
+	pushq	$6
 	pop	%rbx
 	movl	 %ebx, -4(%rbp)
-	pushq	$51
+jmp .L0
+.L1:
+	pushq	-4(%rbp)
 	pop	%rbx
 	movl	 %ebx, -8(%rbp)
-	pushq	$99
-	pop	%rax
-	negl %eax
-	pushq	%rax
-	pop	%rbx
-	movl	 %ebx, -12(%rbp)
-	pushq	-4(%rbp)
-	pushq	-8(%rbp)
-	pop	%rbx
-	pop	%rax
-	cmpl	%ebx, %eax
-	setle	%al
-	pushq	%rax
-	pop	%rbx
-	je .L0
 	movl	-4(%rbp), %eax
 	movl	%eax, %esi
 	movl	$.LC0, %edi
 	movl	$0, 	%eax
 	call	printf
+	pushq	-8(%rbp)
 	pushq	$1
 	pop	%rbx
-	movl	 %ebx, -12(%rbp)
-	 jmp .L1
-.L0:
-	movl	-8(%rbp), %eax
-	movl	%eax, %esi
-	movl	$.LC0, %edi
-	movl	$0, 	%eax
-	call	printf
-.L1:
-	pushq	-12(%rbp)
+	pop	%rax
+	subl	%ebx, %eax
+	pushq	%rax
 	pop	%rbx
-	cmpl	$0, %ebx
-	je .L2
-	movl	-8(%rbp), %eax
-	movl	%eax, %esi
-	movl	$.LC0, %edi
-	movl	$0, 	%eax
-	call	printf
-.L2:
+	movl	 %ebx, -4(%rbp)
+.L0:
+	pushq	-4(%rbp)
+	pushq	$1
+	pop	%rbx
+	pop	%rax
+	cmpl	%ebx, %eax
+	setge	%al
+	pushq	%rax
+	pop	%rax
+	cmpl	$0, %eax
+	jne .L1
 	leave
 	ret
 	.size	main, .-main
