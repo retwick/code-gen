@@ -9,22 +9,22 @@ main:
 	pushq	%rbp
 	movq	%rsp, %rbp
  subq $4000, %rsp
-	pushq	$10
+	pushq	$2
+	pop	%rbx
+	movl	 %ebx, -4(%rbp)
+	pushq	$2
 	pop	%rbx
 	movl	 %ebx, -8(%rbp)
-	pushq	$4
-	pop	%rbx
-	movl	 %ebx, -12(%rbp)
+	pushq	-4(%rbp)
 	pushq	-8(%rbp)
-	pushq	-12(%rbp)
 	pop	%rbx
 	pop	%rax
 	cltd
 	idivl	%ebx
 	pushq	%rdx
 	pop	%rbx
-	movl	 %ebx, -4(%rbp)
-	movl	-4(%rbp), %eax
+	movl	 %ebx, -12(%rbp)
+	movl	-12(%rbp), %eax
 	movl	%eax, %esi
 	movl	$.LC0, %edi
 	movl	$0, 	%eax
